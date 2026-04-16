@@ -1,0 +1,20 @@
+# Obsidian workspace files (local state)
+.obsidian/workspace*
+.obsidian/cache
+.obsidian/graph.json
+
+# macOS
+.DS_Store
+._*
+
+# Secrets (double protection)
+*.env
+.env.*
+secrets/
+*.key
+*.pem
+
+# Temp files
+*.tmp
+*.swp
+*~

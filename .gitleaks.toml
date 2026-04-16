@@ -1,0 +1,51 @@
+# Custom gitleaks rules for Frankie's stack
+# Extends default rules (唔 override，係 append)
+
+title = "Frankie Custom Gitleaks Config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "anthropic-api-key"
+description = "Anthropic API Key"
+regex = '''sk-ant-api03-[A-Za-z0-9_\-]{80,}'''
+tags = ["key", "anthropic"]
+
+[[rules]]
+id = "openrouter-api-key"
+description = "OpenRouter API Key"
+regex = '''sk-or-v1-[a-f0-9]{64}'''
+tags = ["key", "openrouter"]
+
+[[rules]]
+id = "openai-service-key"
+description = "OpenAI Service Account Key"
+regex = '''sk-svcacct-[A-Za-z0-9_\-]{80,}'''
+tags = ["key", "openai"]
+
+[[rules]]
+id = "google-ai-api-key"
+description = "Google AI (Gemini) API Key"
+regex = '''AIza[A-Za-z0-9_\-]{35}'''
+tags = ["key", "google"]
+
+[[rules]]
+id = "telegram-bot-token"
+description = "Telegram Bot Token"
+regex = '''\b[0-9]{9,10}:[A-Za-z0-9_\-]{35}\b'''
+tags = ["key", "telegram"]
+
+[[rules]]
+id = "kie-ai-key"
+description = "Kie.ai API Key (32-char hex)"
+regex = '''\b[a-f0-9]{32}\b'''
+tags = ["key", "kie-ai"]
+# 注意：呢個 pattern 比較 loose，可能會 false positive（例如 git SHA、MD5 hash）
+# 如有誤判，用 git commit --no-verify bypass
+
+[[rules]]
+id = "cloudflare-api-token"
+description = "Cloudflare API Token"
+regex = '''\bcfk_[A-Za-z0-9]{40,}\b'''
+tags = ["key", "cloudflare"]

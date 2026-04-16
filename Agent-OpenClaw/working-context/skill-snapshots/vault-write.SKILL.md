@@ -6,32 +6,44 @@ description: "Write to ~/ObsidianAgents/ vault. Use when user says: (1) log this
 
 # Vault Write Skill
 
+## ⚠️ CRITICAL: Always Use Absolute Paths
+
+**ALWAYS use absolute paths starting with `/Users/kjai/ObsidianAgents/`.**
+
+- ❌ WRONG: `Agent-OpenClaw/daily-logs/2026-04-16.md`
+- ❌ WRONG: `~/ObsidianAgents/Shared/handoffs/test.md` (LLM may write literal `~` as a directory name in some tool calls)
+- ✅ CORRECT: `/Users/kjai/ObsidianAgents/Agent-OpenClaw/daily-logs/2026-04-16.md`
+
+Relative paths resolve to the OpenClaw workspace (`~/.openclaw/workspace/`), NOT to the vault. If you use a relative path, the file will be silently written to the wrong directory.
+
 ## Purpose
 
-向 `~/ObsidianAgents/` vault 寫入內容，並遵守安全同協議規則。
+向 `/Users/kjai/ObsidianAgents/` vault 寫入內容，並遵守安全同協議規則。
 
 ## 寫入前必做
 
-1. 讀 `~/ObsidianAgents/SECURITY.md` 確認唔會 leak secret
-2. 讀 `~/ObsidianAgents/Shared/HANDOFF-PROTOCOL.md` 確認格式
+1. 讀 `/Users/kjai/ObsidianAgents/SECURITY.md` 確認唔會 leak secret
+2. 讀 `/Users/kjai/ObsidianAgents/Shared/HANDOFF-PROTOCOL.md` 確認格式
 
 ## 我可以寫邊度
 
-| 目的 | 路徑 |
+| 目的 | 絕對路徑 |
 |---|---|
-| Daily log | `Agent-OpenClaw/daily-logs/YYYY-MM-DD.md` |
-| 錯誤記錄 | `Agent-OpenClaw/mistakes/YYYY-MM-DD-slug.md` |
-| Working context | `Agent-OpenClaw/working-context/<topic>.md` |
-| Handoff 畀 Hermes | `Shared/handoffs/YYYY-MM-DD-slug.md` |
-| Lesson learned | `Shared/lessons-learned/YYYY-MM-DD-slug.md` |
-| Decision record | `Shared/decisions/YYYY-MM-DD-slug.md` |
+| Daily log | `/Users/kjai/ObsidianAgents/Agent-OpenClaw/daily-logs/YYYY-MM-DD.md` |
+| 錯誤記錄 | `/Users/kjai/ObsidianAgents/Agent-OpenClaw/mistakes/YYYY-MM-DD-slug.md` |
+| Working context | `/Users/kjai/ObsidianAgents/Agent-OpenClaw/working-context/<topic>.md` |
+| Handoff 畀 Hermes | `/Users/kjai/ObsidianAgents/Shared/handoffs/YYYY-MM-DD-slug.md` |
+| Lesson learned | `/Users/kjai/ObsidianAgents/Shared/lessons-learned/YYYY-MM-DD-slug.md` |
+| Decision record | `/Users/kjai/ObsidianAgents/Shared/decisions/YYYY-MM-DD-slug.md` |
 
 ## 唔可以寫
 
-- `Agent-Hermes/` 下面任何嘢（除非係讀）
-- 覆蓋 Shared/ 入面 status=`completed` 嘅檔
+- `/Users/kjai/ObsidianAgents/Agent-Hermes/` 下面任何嘢（除非係讀）
+- 覆蓋 `/Users/kjai/ObsidianAgents/Shared/` 入面 `status=completed` 嘅檔
 
 ## Template：Daily Log
+
+File path：`/Users/kjai/ObsidianAgents/Agent-OpenClaw/daily-logs/YYYY-MM-DD.md`
 
 ```markdown
 ---
@@ -46,10 +58,10 @@ agent: OpenClaw
 - Task 2：...
 
 ## What I learned
-- （如果係重大 learning，同時 mirror 去 Shared/lessons-learned/）
+- （如果係重大 learning，同時 mirror 去 /Users/kjai/ObsidianAgents/Shared/lessons-learned/）
 
 ## Mistakes made
-- （如果有，同時詳細寫喺 mistakes/）
+- （如果有，同時詳細寫喺 /Users/kjai/ObsidianAgents/Agent-OpenClaw/mistakes/）
 
 ## Handoffs
 - Sent: [link to handoff file]
@@ -61,12 +73,15 @@ agent: OpenClaw
 
 ## Template：寫 Handoff 畀 Hermes
 
-跟 `HANDOFF-PROTOCOL.md` 定義嘅 YAML frontmatter 格式。
+File path：`/Users/kjai/ObsidianAgents/Shared/handoffs/YYYY-MM-DD-slug.md`
+
+跟 `/Users/kjai/ObsidianAgents/Shared/HANDOFF-PROTOCOL.md` 定義嘅 YAML frontmatter 格式。
 `target_agent: Hermes`，`status: awaiting_review`。
 
 ## Secret 自查
 
 寫之前 mental check：
+
 - 有冇 API key？
 - 有冇 password / token？
 - 有冇完整 email？
@@ -81,4 +96,4 @@ agent: OpenClaw
 
 ## Pre-commit hook 會自動攔截
 
-如果誤寫 secret，`.git/hooks/pre-commit` 會 block commit，你會見到 ❌ 訊息。
+如果誤寫 secret，`/Users/kjai/ObsidianAgents/.git/hooks/pre-commit` 會 block commit，你會見到 ❌ 訊息。

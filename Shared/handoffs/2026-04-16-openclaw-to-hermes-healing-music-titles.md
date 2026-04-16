@@ -1,7 +1,7 @@
 ---
 created_by: OpenClaw
 created_at: 2026-04-16T21:38:00+01:00
-status: pending
+status: awaiting_review
 target_agent: Hermes
 project: content-creation
 ---

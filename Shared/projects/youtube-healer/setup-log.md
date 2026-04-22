@@ -97,3 +97,36 @@ Date: 2026-04-18
 5. Complete revision loop test
 
 ---
+
+---
+## Update: Model Diversity + Fallback System
+Date: 2026-04-22
+
+### Model Assignment (Final)
+| Agent | Primary | Fallback |
+|-------|---------|----------|
+| Maestro 🎼 | nvidia/nemotron-3-super-120b-a12b:free | minimax/minimax-m2.7 |
+| Critic 😈 | nvidia/nemotron-3-super-120b-a12b:free | minimax/minimax-m2.7 |
+| Harmony 🎵 | google/gemma-4-26b-a4b-it:free | minimax/minimax-m2.7 |
+| Scout 🔍 | google/gemma-4-26b-a4b-it:free | minimax/minimax-m2.7 |
+| Publisher 📤 | google/gemma-4-26b-a4b-it:free | minimax/minimax-m2.7 |
+| Pixel 🎨 | google/gemma-4-31b-it:free | minimax/minimax-m2.7 |
+
+### Lessons Learned
+- ⚠️ Model exists in catalog ≠ model actually works — always smoke test
+- ⚠️ Gemma 4 :free suspended (Google API key issue on OpenRouter side)
+- ⚠️ Nemotron confabulates when sub-agents fail silently — fallback fixes root cause
+- ✅ Fallback chain proven: Gemma 4 fails → MiniMax auto-takes over transparently
+- ✅ Persona preserved across fallback — Harmony identical in both models
+
+### Current Runtime Status
+- Maestro + Critic: Nemotron 3 Super (working)
+- Harmony + Scout + Publisher + Pixel: MiniMax M2.7 via fallback (working)
+- When Gemma 4 :free resumes: auto-switches back, no config change needed
+
+### Nemotron Persona Drift Note
+- Observed confabulation when sub-agents failed silently
+- Likely resolved by fallback (sub-agents now return real responses)
+- Monitor on next full pipeline run — harden AGENTS.md if persists
+
+---

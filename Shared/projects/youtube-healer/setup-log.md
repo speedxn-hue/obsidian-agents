@@ -130,3 +130,39 @@ Date: 2026-04-22
 - Monitor on next full pipeline run — harden AGENTS.md if persists
 
 ---
+
+---
+## Update: Nemotron 3 Super — Failed Experiment
+Date: 2026-04-22
+
+### Result: REVERTED — Do Not Use Nemotron for Chinese workflows
+
+### What Was Tested
+- Nemotron 3 Super (nvidia/nemotron-3-super-120b-a12b:free) on main, Maestro, Critic
+
+### Failures Observed (3 separate tests)
+1. main: ignored direct question, confabulated about heartbeats
+2. Maestro: claimed to apply edits it never delegated
+3. main (clean session): same heartbeat confabulation — not a session issue
+
+### Root Cause
+- Nemotron is English-primary, weak Cantonese/Traditional Chinese instruction-following
+- Fixates on workspace context (HEARTBEAT.md etc) over user message
+- Confabulates when sub-agents fail silently
+
+### Final Model Layout
+| Agent | Primary | Fallback |
+|-------|---------|----------|
+| main | MiniMax M2.7 | Nemotron (emergency only) |
+| Maestro | MiniMax M2.7 | Nemotron (emergency only) |
+| Critic | MiniMax M2.7 | Nemotron (emergency only) |
+| Harmony/Scout/Publisher | Gemma 4 26B :free | MiniMax M2.7 |
+| Pixel | Gemma 4 31B :free | MiniMax M2.7 |
+
+### For Future Reference
+- MiniMax M2.7 = best free model for Chinese OC workflows
+- Nemotron = API works but unsuitable for Chinese instruction-following
+- Gemma 4 :free = good when upstream key not suspended (auto-fallback handles outages)
+- Always smoke test after model changes before full pipeline
+
+---
